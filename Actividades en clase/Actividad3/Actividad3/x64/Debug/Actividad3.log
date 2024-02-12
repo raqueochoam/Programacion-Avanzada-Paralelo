@@ -1,0 +1,32 @@
+﻿  Compiling CUDA source file kernel.cu...
+  
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\HostX64\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include"  -G   --keep-dir x64\Debug  -maxrregcount=0   --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/Fdx64\Debug\vc143.pdb" -o "C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\x64\Debug\kernel.cu.obj" "C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu" 
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(37): warning #224-D: the format string requires additional arguments
+            printf("Device number: %d\n");
+                                        ^
+  
+  Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+  
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(32): warning #177-D: variable "prop" was declared but never referenced
+        cudaDeviceProp(prop);
+                       ^
+  
+  kernel.cu
+  tmpxft_00001320_00000000-7_kernel.cudafe1.cpp
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(17): warning C4474: 'fprintf' : too many arguments passed for format string
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(17): note: placeholders and their parameters expect 0 variadic arguments, but 3 were provided
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(37): warning C4473: 'printf' : not enough arguments passed for format string
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(37): note: placeholders and their parameters expect 1 variadic arguments, but 0 were provided
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(37): note: the missing variadic argument 1 is required by format string '%d'
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(44): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'size_t'
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(44): note: consider using '%zd' in the format string
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(45): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'size_t'
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(45): note: consider using '%zd' in the format string
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(46): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'size_t'
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(46): note: consider using '%zd' in the format string
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(47): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'size_t'
+  C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(47): note: consider using '%zd' in the format string
+C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\Actividad3\kernel.cu(32): warning C4101: 'prop': unreferenced local variable
+     Creating library C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\x64\Debug\Actividad3.lib and object C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\x64\Debug\Actividad3.exp
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Actividad3.vcxproj -> C:\Users\CIAC\Desktop\Programacion-Avanzada-Paralelo\Actividades en clase\Actividad3\x64\Debug\Actividad3.exe
