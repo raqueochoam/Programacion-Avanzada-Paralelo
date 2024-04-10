@@ -1,0 +1,39 @@
+﻿  Compiling CUDA source file kernel.cu...
+  
+  C:\Users\CIAC\source\repos\labQuickSort\labQuickSort>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\HostX64\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include"  -G   --keep-dir x64\Debug  -maxrregcount=0   --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/Fdx64\Debug\vc143.pdb" -o C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\x64\Debug\kernel.cu.obj "C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu" 
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(57): error : a __global__ function call must be configured
+            quickSort2(arr, low, pi - 1);
+            ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(58): error : a __global__ function call must be configured
+            quickSort2(arr, pi + 1, high);
+            ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(75): error : argument of type "int *" is incompatible with parameter of type "size_t"
+        a_cpu = (int*)malloc(data);
+                             ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(78): error : no instance of overloaded function "cudaMalloc" matches the argument list
+              argument types are: (void **, int *)
+        cudaMalloc((void**)&a_device, data);
+        ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(81): error : argument of type "int *" is incompatible with parameter of type "size_t"
+        cudaMemcpy(a_device, a_cpu, data, cudaMemcpyHostToDevice);
+                                    ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(86): error : no suitable constructor exists to convert from "int *" to "dim3"
+        quickSort2 << <data, 0, data_count-1>> > ();
+                       ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(86): error : too few arguments in function call
+        quickSort2 << <data, 0, data_count-1>> > ();
+                                                  ^
+  
+C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu(96): error : argument of type "int *" is incompatible with parameter of type "size_t"
+        cudaMemcpy(a_cpu, a_device, data, cudaMemcpyDeviceToHost);
+                                    ^
+  
+  8 errors detected in the compilation of "C:/Users/CIAC/source/repos/labQuickSort/labQuickSort/kernel.cu".
+  kernel.cu
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\BuildCustomizations\CUDA 12.3.targets(799,9): error MSB3721: The command ""C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\bin\HostX64\x64" -x cu   -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include"  -G   --keep-dir x64\Debug  -maxrregcount=0   --machine 64 --compile -cudart static  -g  -DWIN32 -DWIN64 -D_DEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/Fdx64\Debug\vc143.pdb" -o C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\x64\Debug\kernel.cu.obj "C:\Users\CIAC\source\repos\labQuickSort\labQuickSort\kernel.cu"" exited with code 2.
