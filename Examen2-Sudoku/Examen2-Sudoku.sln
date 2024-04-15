@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Examen2-Sudoku", "Examen2-Sudoku\Examen2-Sudoku.vcxproj", "{251F758C-5E23-4454-8597-AC4EC5A51992}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{251F758C-5E23-4454-8597-AC4EC5A51992}.Debug|x64.ActiveCfg = Debug|x64
+		{251F758C-5E23-4454-8597-AC4EC5A51992}.Debug|x64.Build.0 = Debug|x64
+		{251F758C-5E23-4454-8597-AC4EC5A51992}.Release|x64.ActiveCfg = Release|x64
+		{251F758C-5E23-4454-8597-AC4EC5A51992}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC4BB3E7-9084-4F08-8AF6-919C2C406496}
+	EndGlobalSection
+EndGlobal
