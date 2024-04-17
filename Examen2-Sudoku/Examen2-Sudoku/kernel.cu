@@ -51,6 +51,31 @@ __global__ void chequeoColumnas(char* sudoku, bool* resultado) {
     }
 }
 
+__global__ void chequeoSubcuadros(char* sudoku, bool* resultado) {
+    int subcuadro_id = blockIdx.x * blockDim.x + threadIdx.x;
+    int inicio_fila = (subcuadro_id / 3) * 3;
+    int inicio_columna = (subcuadro_id % 3) * 3;
+
+    bool subcuadro_valido[9] = { false };
+
+    for (int i = inicio_fila; i < inicio_fila + 3; ++i) {
+        for (int j = inicio_columna; j < inicio_columna + 3; ++j) {
+            char elemento = sudoku[i * COLUMNAS + j];
+            if (elemento != '.') {
+                int valor = elemento - '0';
+                if (subcuadro_valido[valor - 1]) {
+                    printf("peto en subcuadro\n");
+                    resultado[subcuadro_id] = false;
+                    return;
+                }
+                else {
+                    subcuadro_valido[valor - 1] = true;
+                }
+            }
+        }
+    }
+}
+
 int main() {
     char sudoku[FILAS][COLUMNAS] = {
         {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
@@ -86,6 +111,7 @@ int main() {
     //ejecutar kernel
     chequeoFilas << <1, FILAS >> > (d_sudoku, d_resultado);
     chequeoColumnas << <1, COLUMNAS >> > (d_sudoku, d_resultado);
+    chequeoSubcuadros << <1, 9 >> > (d_sudoku, d_resultado);
 
     // Record end time
     auto end = std::chrono::high_resolution_clock::now();
