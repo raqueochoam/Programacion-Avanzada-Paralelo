@@ -1,38 +1,50 @@
 ﻿#include <iostream>
+#include <cuda_runtime.h>
+#include <cstdlib> // For std::rand() and std::srand()
+#include <ctime>   // For std::time()
+#include <chrono>  // For timing measurements
+#include "device_launch_parameters.h"  // For using blockDim, threadIdx, etc.
 
 const int FILAS = 9;
 const int COLUMNAS = 9;
 
-__global__ void chequeoGeneral(char* sudoku, bool* resultado) {
-    *resultado = true;
-    if (blockIdx.x == 0 && threadIdx.x == 0) {
-        for (int i = 0; i < FILAS; ++i) {
-            for (int j = 0; j < COLUMNAS; ++j) {
-                if (sudoku[i * COLUMNAS + j] == '\0') {
-                    *resultado = false;
+__global__ void chequeoFilas(char* sudoku, bool* resultado) {
+    int fila = blockIdx.x * blockDim.x + threadIdx.x;
+    if (fila < FILAS) {
+        bool fila_valida[FILAS] = { false };
+        for (int j = 0; j < COLUMNAS; j++) {
+            char elemento = sudoku[fila * COLUMNAS + j];
+            if (elemento != '.') {
+                int valor = elemento - '0';
+                if (fila_valida[valor - 1]) {
+                    printf("peto en una fila\n");
+                    resultado[fila] = false;
                     return;
+                }
+                else {
+                    fila_valida[valor - 1] = true;
+                    
                 }
             }
         }
     }
 }
 
-__global__ void chequeoFilas(char* sudoku, bool* resultado) {
-    *resultado = true;
-    for (int i = 0; i < FILAS; i++) {
-        bool fila_valida[FILAS] = { false };
-        for (int j = 0; j < COLUMNAS; j++) {
-            char elemento = sudoku[i * COLUMNAS + j];
+__global__ void chequeoColumnas(char* sudoku, bool* resultado) {
+    int columna = blockIdx.x * blockDim.x + threadIdx.x;
+    if (columna < COLUMNAS) {
+        bool columna_valida[COLUMNAS] = { false };
+        for (int i = 0; i < FILAS; i++) {
+            char elemento = sudoku[i * COLUMNAS + columna];
             if (elemento != '.') {
                 int valor = elemento - '0';
-                if (fila_valida[valor - 1]) {
-                    *resultado = false;
-                    printf("no es valido, pff\n");
+                if (columna_valida[valor - 1]) {
+                    printf("peto en una columna\n");
+                    resultado[columna + FILAS] = false;
                     return;
                 }
                 else {
-                    fila_valida[valor - 1] = true;
-                    printf("todo bien por ahora\n");
+                    columna_valida[valor - 1] = true;
                 }
             }
         }
@@ -54,26 +66,57 @@ int main() {
 
     char* d_sudoku;
     bool* d_resultado;
-    bool resultado, * h_resultado;
-    h_resultado = &resultado;
+    bool resultado[FILAS + COLUMNAS];
+    bool* h_resultado = new bool[FILAS + COLUMNAS]; 
+    for (int i = 0; i < FILAS + COLUMNAS; ++i) {
+        h_resultado[i] = true; 
+    }
+
+    std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed srand with current time
 
     cudaMalloc((void**)&d_sudoku, FILAS * COLUMNAS * sizeof(char));
-    cudaMalloc((void**)&d_resultado, sizeof(bool));
+    cudaMalloc((void**)&d_resultado, (FILAS + COLUMNAS) * sizeof(bool)); // Reservar memoria en el dispositivo para los resultados
 
+    cudaMemcpy(d_resultado, h_resultado, (FILAS + COLUMNAS) * sizeof(bool), cudaMemcpyHostToDevice); // Copiar los resultados al dispositivo
     cudaMemcpy(d_sudoku, sudoku, FILAS * COLUMNAS * sizeof(char), cudaMemcpyHostToDevice);
 
-    chequeoGeneral << <1, 1 >> > (d_sudoku, d_resultado);
-    cudaMemcpy(h_resultado, d_resultado, sizeof(bool), cudaMemcpyDeviceToHost);
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
 
-    if (resultado) {
-        std::cout << "La matriz es de 9x9." << std::endl;
-    }
-    else {
-        std::cout << "La matriz NO es de 9x9." << std::endl;
-    }
+    //ejecutar kernel
+    chequeoFilas << <1, FILAS >> > (d_sudoku, d_resultado);
+    chequeoColumnas << <1, COLUMNAS >> > (d_sudoku, d_resultado);
+
+    // Record end time
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calcular la duración en milisegundos
+    std::chrono::duration<float, std::milli> duration_ms = end - start;
+
+    // Imprimir el tiempo de ejecución
+    std::cout << "Tiempo de ejecucion: " << duration_ms.count() << " ms" << std::endl;
+
+    cudaMemcpy(h_resultado, d_resultado, (FILAS + COLUMNAS) * sizeof(bool), cudaMemcpyDeviceToHost);
 
     cudaFree(d_sudoku);
     cudaFree(d_resultado);
+
+    bool sudoku_valido = true;
+    for (int i = 0; i < FILAS + COLUMNAS; ++i) {
+        if (!h_resultado[i]) {
+            sudoku_valido = false;
+            break;
+        }
+    }
+
+    delete[] h_resultado; // Liberar la memoria del array en el host
+
+    if (sudoku_valido) {
+        std::cout << "El sudoku es valido." << std::endl;
+    }
+    else {
+        std::cout << "El sudoku NO es valido." << std::endl;
+    }
 
     return 0;
 }
