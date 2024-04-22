@@ -76,6 +76,65 @@ __global__ void chequeoSubcuadros(char* sudoku, bool* resultado) {
     }
 }
 
+// Función para verificar si un valor es válido en una posición dada del sudoku
+bool esValido(char* sudoku, int fila, int columna, char valor) {
+    // Verifica la fila y la columna
+    for (int i = 0; i < 9; ++i) {
+        if (sudoku[fila * COLUMNAS + i] == valor || sudoku[i * COLUMNAS + columna] == valor) {
+            return false;
+        }
+    }
+
+    // Verifica el subcuadro
+    int inicio_fila = (fila / 3) * 3;
+    int inicio_columna = (columna / 3) * 3;
+    for (int i = inicio_fila; i < inicio_fila + 3; ++i) {
+        for (int j = inicio_columna; j < inicio_columna + 3; ++j) {
+            if (sudoku[i * COLUMNAS + j] == valor) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// Función de backtracking para resolver el sudoku
+bool resolverSudoku(char* sudoku, int fila, int columna) {
+    if (fila == 9) {
+        return true; // Se ha resuelto todo el sudoku
+    }
+
+    if (sudoku[fila * COLUMNAS + columna] != '.') {
+        // Si la celda ya está llena, pasa a la siguiente
+        if (columna == 8) {
+            return resolverSudoku(sudoku, fila + 1, 0);
+        }
+        else {
+            return resolverSudoku(sudoku, fila, columna + 1);
+        }
+    }
+
+    for (char c = '1'; c <= '9'; ++c) {
+        if (esValido(sudoku, fila, columna, c)) {
+            sudoku[fila * COLUMNAS + columna] = c;
+            if (columna == 8) {
+                if (resolverSudoku(sudoku, fila + 1, 0)) {
+                    return true;
+                }
+            }
+            else {
+                if (resolverSudoku(sudoku, fila, columna + 1)) {
+                    return true;
+                }
+            }
+            sudoku[fila * COLUMNAS + columna] = '.'; // Si no se encontró solución, vuelve a poner la celda como vacía
+        }
+    }
+
+    return false; // No se encontró ninguna solución
+}
+
 int main() {
     char sudoku[FILAS][COLUMNAS] = {
         {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
@@ -139,6 +198,20 @@ int main() {
 
     if (sudoku_valido) {
         std::cout << "El sudoku es valido." << std::endl;
+
+        // Resolver el Sudoku
+        if (resolverSudoku(sudoku[0], 0, 0)) {
+            std::cout << "Sudoku resuelto:" << std::endl;
+            for (int i = 0; i < FILAS; ++i) {
+                for (int j = 0; j < COLUMNAS; ++j) {
+                    std::cout << sudoku[i][j] << " ";
+                }
+                std::cout << std::endl;
+            }
+        }
+        else {
+            std::cout << "No se pudo resolver el Sudoku." << std::endl;
+        }
     }
     else {
         std::cout << "El sudoku NO es valido." << std::endl;
